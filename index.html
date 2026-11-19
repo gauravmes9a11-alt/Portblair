@@ -109,7 +109,47 @@ header.scrolled{
   box-shadow:0 6px 24px -4px rgba(0,0,0,.35);
 }
 header .w{display:flex;align-items:center;justify-content:space-between;height:62px;gap:16px}
-.logo{font-weight:700;text-decoration:none;letter-spacing:-.01em;white-space:nowrap;transition:color .2s}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:700;
+.nav-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1.5px solid var(--b);transition:transform .25s ease}
+.logo:hover .nav-avatar{transform:scale(1.12)}
+.hero-profile-badge{display:flex;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.hero-profile-badge .pill{margin-bottom:0}
+.hero-avatar-wrap{
+  position:relative;width:58px;height:58px;border-radius:50%;padding:2.5px;
+  background:linear-gradient(135deg,var(--a),var(--b));
+  box-shadow:0 0 18px color-mix(in srgb,var(--b) 35%,transparent);flex-shrink:0;
+  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
+}
+.hero-avatar-wrap:hover{transform:scale(1.08) rotate(3deg);box-shadow:0 0 26px color-mix(in srgb,var(--b) 60%,transparent)}
+.hero-avatar{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;background:var(--s1)}
+.status-pulse{
+  position:absolute;bottom:1px;right:1px;width:13px;height:13px;border-radius:50%;
+  background:#10B981;border:2px solid var(--bg);box-shadow:0 0 8px #10B981;
+}
+.about-profile-card{
+  display:flex;gap:22px;align-items:center;border:1px solid var(--line);border-radius:18px;
+  padding:16px 20px;background:color-mix(in srgb,var(--s1) 85%,transparent);
+  backdrop-filter:blur(10px);margin-bottom:24px;
+  transition:border-color .3s,transform .3s,box-shadow .3s;
+}
+.about-profile-card:hover{border-color:color-mix(in srgb,var(--a) 45%,var(--line));transform:translateY(-2px);box-shadow:0 10px 28px -6px color-mix(in srgb,var(--a) 25%,transparent)}
+.about-photo-wrap{
+  position:relative;width:90px;height:90px;border-radius:50%;padding:3px;
+  background:linear-gradient(135deg,var(--a),var(--b));flex-shrink:0;
+  box-shadow:0 8px 22px -4px color-mix(in srgb,var(--a) 40%,transparent);
+  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
+}
+.about-photo-wrap:hover{transform:scale(1.06);box-shadow:0 12px 28px -4px color-mix(in srgb,var(--b) 50%,transparent)}
+.about-photo-wrap img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.about-profile-info h3{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:2px}
+.about-profile-info .role{color:var(--b);font-size:14px;font-weight:500;margin-bottom:8px;display:block}
+.about-profile-badges{display:flex;flex-wrap:wrap;gap:7px}
+.about-profile-badges span{
+  font-size:12px;padding:3px 9px;border-radius:99px;
+  background:color-mix(in srgb,var(--a) 12%,transparent);color:var(--tx);
+  border:1px solid color-mix(in srgb,var(--line) 80%,transparent);
+}
+text-decoration:none;letter-spacing:-.01em;white-space:nowrap;transition:color .2s}
 .logo:hover{color:var(--b)}
 nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 nav a{
@@ -572,14 +612,20 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
 </div>
 
 <header id="site-header"><div class="w">
- <a class="logo" href="#home">Gaurav Shivakumar</a>
+ <a class="logo" href="#home"><img src="assets/gaurav.jpg" alt="Gaurav Shivakumar" class="nav-avatar" width="28" height="28" /> Gaurav Shivakumar</a>
  <nav aria-label="Primary"><a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#achievements">Achievements</a><a href="#contact">Contact</a></nav>
 </div></header>
 
 <main>
 <section id="home"><div class="w hg">
  <div class="rv">
-  <span class="pill"><b>1st place</b> at HAL × IIT Indore Aerothon 2026</span>
+  <div class="hero-profile-badge">
+   <div class="hero-avatar-wrap">
+    <img src="assets/gaurav.jpg" alt="Gaurav Shivakumar" class="hero-avatar" width="58" height="58" />
+    <span class="status-pulse" title="Available for AI/ML Opportunities"></span>
+   </div>
+   <span class="pill"><b>1st place</b> at HAL × IIT Indore Aerothon 2026</span>
+  </div>
   <h1>I build AI systems for problems where every choice costs something.</h1>
   <p class="intro">Second-year B.Tech student in Computer Science (AI/ML) at PES University, Bengaluru. I work on optimization, computer vision and forecasting, and I’ve taken that work from hackathons to an HPCL internship.</p>
   <div class="cta"><a class="btn p" href="#projects">View My Work</a><a class="btn" href="Gaurav_Shivakumar_Resume.pdf" download>Download Resume</a></div>
@@ -599,6 +645,20 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
 <section id="about"><div class="w two">
  <div class="about rv">
   <h2>About</h2>
+  <div class="about-profile-card spotlight-card">
+   <div class="about-photo-wrap">
+    <img src="assets/gaurav.jpg" alt="Gaurav Shivakumar" width="90" height="90" />
+   </div>
+   <div class="about-profile-info">
+    <h3>Gaurav Shivakumar</h3>
+    <span class="role">AI/ML Engineer · PES University '28</span>
+    <div class="about-profile-badges">
+     <span>Bengaluru, India</span>
+     <span>Aerospace Optimization</span>
+     <span>Computer Vision</span>
+    </div>
+   </div>
+  </div>
   <p>I’m a second-year B.Tech student in Computer Science (AI/ML) at PES University. What I enjoy most is the point where machine learning meets an engineering constraint: a drone that has to stay in the air, a pipeline that must not miss an intrusion, a fuel station that must not lose money to fraud.</p>
   <p>I build across computer vision, forecasting, anomaly detection and multi-objective optimization, with embedded hardware and cybersecurity as a second thread. At the Aerothon I saw AI/ML, electrical engineering, data analytics and aerospace engineering converge on one problem, and I want more of that.</p>
   <p>Away from code I run logistics and operations for large student events, which taught me to plan for what goes wrong.</p>
