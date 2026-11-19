@@ -1,6 +1,10 @@
 /**
- * DigitalGlobe.js - Core Digital Earth Component & Point Cloud Generator
- * Part of the 3D Holographic Digital Globe for Gaurav Shivakumar Portfolio
+ * DigitalGlobe.js - Core Digital Earth Component & Contour Point Cloud Generator
+ * Recreates the cyber-holographic aesthetic from the reference image:
+ * - High-density latitude contour dot matrix
+ * - South polar (Antarctica) concentric topographic ripple waves
+ * - Dual-tone luminous cyan and electric blue landmass points
+ * - Integrated with GlobeScene and GlobeEffects
  */
 
 (function(window) {
@@ -13,33 +17,36 @@
   }
 
   DigitalGlobe.prototype.init = function() {
-    // 1. Initialize Scene & Viewport
+    // 1. Initialize Viewport, Scene & Camera
     this.sceneManager = new GlobeScene(this.containerId);
     if (!this.sceneManager || !this.sceneManager.scene) return;
 
     var scene = this.sceneManager.scene;
     var globeGroup = this.sceneManager.globeGroup;
 
-    // 2. Generate Accurate Continental Landmass Mask on Offscreen Canvas
+    // 2. Generate Accurate Continental Land-Sea Mask in Memory
     var landData = this.createLandMaskCanvas();
 
-    // 3. Generate 3D Spherical Continental Point Cloud
-    this.createPointCloud(globeGroup, landData);
+    // 3. Generate High-Density Contour Point Cloud
+    this.createContourPointCloud(globeGroup, landData);
 
-    // 4. Initialize Globe Effects (Atmosphere, Arcs, Photons, Rings)
+    // 4. Generate South Polar Topographic Ripple Rings (Signature feature from reference image)
+    this.createPolarContourRings(globeGroup);
+
+    // 5. Initialize Cyber Effects (Hexagons, Orbital Rings, Telemetry Spikes, Amber Satellites, Arcs)
     this.effects = new GlobeEffects(scene, globeGroup, this.radius);
 
-    // 5. Connect Hover Events between Scene and Effects
+    // 6. Connect Hover State
     var self = this;
     this.sceneManager.onHoverChange = function(isHovered) {
       if (self.effects) self.effects.setHoverState(isHovered);
     };
 
-    // 6. Start 60 FPS Animation Loop
+    // 7. Start 60 FPS Render Loop
     this.startLoop();
   };
 
-  // Creates a 360x180 vector land-sea mask in memory
+  // Creates a 360x180 vector land-sea mask
   DigitalGlobe.prototype.createLandMaskCanvas = function() {
     var canvas = document.createElement('canvas');
     canvas.width = 360;
@@ -70,7 +77,7 @@
       ctx.fill();
     }
 
-    // High-fidelity continental vector coordinates
+    // Accurate continental outlines
     // North America
     drawPoly([
       [-168, 65], [-165, 60], [-160, 55], [-150, 60], [-140, 60], [-135, 54], [-125, 50],
@@ -98,7 +105,7 @@
       [15, 40], [10, 44], [3, 43], [0, 38], [-5, 36], [-9, 36]
     ]);
 
-    // India Detailed Subcontinent
+    // India Subcontinent
     drawPoly([[68, 24], [73, 22], [73, 15], [77, 8], [80, 10], [80, 16], [88, 22], [80, 28], [72, 28], [68, 24]]);
 
     // Scandinavia
@@ -120,58 +127,68 @@
       [153, -28], [150, -35], [140, -38], [135, -35], [120, -35], [115, -34], [114, -22]
     ]);
 
-    // Japan & East Asia Islands
+    // Japan & East Asia
     drawPoly([[130, 32], [135, 34], [140, 36], [142, 43], [140, 45], [138, 38], [130, 32]]);
 
     // Greenland
     drawPoly([[-50, 60], [-40, 60], [-25, 70], [-20, 80], [-40, 83], [-60, 80], [-55, 70], [-50, 60]]);
 
+    // Antarctica Continental Cap
+    drawPoly([
+      [-180, -68], [180, -68], [180, -90], [-180, -90]
+    ]);
+
     return ctx.getImageData(0, 0, 360, 180).data;
   };
 
-  // Generates 10,000+ points across Fibonacci spherical surface
-  DigitalGlobe.prototype.createPointCloud = function(globeGroup, landData) {
-    var samples = 11000;
+  // Generates contour point clouds along parallel latitude lines
+  DigitalGlobe.prototype.createContourPointCloud = function(globeGroup, landData) {
     var positions = [];
     var colors = [];
 
-    var cCyan = new THREE.Color(0x6FE0F2);
-    var cBlue = new THREE.Color(0x5C8DFF);
-    var cOcean = new THREE.Color(0x1F2B47);
+    var cCyan = new THREE.Color(0x00E5FF);      // Vibrant Electric Cyan
+    var cLightBlue = new THREE.Color(0x38BDF8);  // Luminescent Light Blue
+    var cWhite = new THREE.Color(0xFFFFFF);      // High-reflectance crests
+    var cOcean = new THREE.Color(0x132347);      // Faint ocean coordinate dot
 
-    // Golden Ratio Spiral algorithm on sphere
-    var phiOffset = (1 + Math.sqrt(5)) / 2;
+    // Sample across latitude contours from -85 to +85 degrees
+    var latStep = 1.35; // Fine horizontal latitude ring lines
+    for (var lat = -84; lat <= 84; lat += latStep) {
+      var phi = (90 - lat) * (Math.PI / 180);
+      var radiusAtLat = Math.sin(phi);
+      // Adjust longitude density based on latitude circumference
+      var numPoints = Math.max(12, Math.floor(280 * radiusAtLat));
+      var lonStep = 360 / numPoints;
 
-    for (var i = 0; i < samples; i++) {
-      var y = 1 - (i / (samples - 1)) * 2; // y goes from 1 to -1
-      var radiusAtY = Math.sqrt(1 - y * y);
-      var theta = (2 * Math.PI * i) / phiOffset;
+      for (var p = 0; p < numPoints; p++) {
+        var lon = -180 + p * lonStep;
+        var theta = (lon + 180) * (Math.PI / 180);
 
-      var x = Math.cos(theta) * radiusAtY;
-      var z = Math.sin(theta) * radiusAtY;
+        var imgX = Math.floor(lon + 180);
+        var imgY = Math.floor(90 - lat);
+        imgX = Math.max(0, Math.min(359, imgX));
+        imgY = Math.max(0, Math.min(179, imgY));
 
-      // Calculate Latitude and Longitude in degrees
-      var lat = Math.asin(y) * (180 / Math.PI);
-      var lon = Math.atan2(z, -x) * (180 / Math.PI);
+        var pixelIndex = (imgY * 360 + imgX) * 4;
+        var isLand = landData[pixelIndex] > 90;
 
-      var imgX = Math.floor(lon + 180);
-      var imgY = Math.floor(90 - lat);
-      imgX = Math.max(0, Math.min(359, imgX));
-      imgY = Math.max(0, Math.min(179, imgY));
+        // Elevation bump for land contours
+        var elevation = isLand ? (1.006 + Math.sin(lat * 0.15 + lon * 0.15) * 0.012) : 1.0;
+        var r = this.radius * elevation;
 
-      var pixelIndex = (imgY * 360 + imgX) * 4;
-      var isLand = landData[pixelIndex] > 100;
-
-      // Render all land points + sparse ocean points for subtle holographic sphere depth
-      if (isLand || (i % 7 === 0)) {
-        positions.push(x * this.radius, y * this.radius, z * this.radius);
+        var x = -(r * Math.sin(phi) * Math.cos(theta));
+        var z = (r * Math.sin(phi) * Math.sin(theta));
+        var y = (r * Math.cos(phi));
 
         if (isLand) {
-          var dotColor = (i % 3 === 0) ? cCyan : cBlue;
-          colors.push(dotColor.r, dotColor.g, dotColor.b);
-        } else {
-          // Ocean faint point
-          colors.push(cOcean.r * 0.35, cOcean.g * 0.35, cOcean.b * 0.35);
+          positions.push(x, y, z);
+          // Dual-tone cyan/blue with occasional bright white nodes
+          var col = (p % 11 === 0) ? cWhite : ((p % 2 === 0) ? cCyan : cLightBlue);
+          colors.push(col.r, col.g, col.b);
+        } else if (p % 4 === 0) {
+          // Sparse ocean dots defining spherical surface volume
+          positions.push(x, y, z);
+          colors.push(cOcean.r * 0.45, cOcean.g * 0.45, cOcean.b * 0.45);
         }
       }
     }
@@ -180,18 +197,54 @@
     geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     geom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-    // Particle Material
     var mat = new THREE.PointsMaterial({
-      size: 1.65,
+      size: 1.85,
       vertexColors: true,
       transparent: true,
-      opacity: 0.95,
+      opacity: 0.96,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
 
     this.pointsMesh = new THREE.Points(geom, mat);
     globeGroup.add(this.pointsMesh);
+  };
+
+  // 4. South Polar (Antarctica) Concentric Topographic Ripple Rings
+  // (Signature visual from bottom of reference image)
+  DigitalGlobe.prototype.createPolarContourRings = function(globeGroup) {
+    var ringMat = new THREE.LineBasicMaterial({
+      color: 0x00E5FF,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending
+    });
+
+    // Generate 6 concentric topographic ring ripples around the south pole
+    var polarLatitudes = [-70, -73, -76, -79, -82, -85];
+    polarLatitudes.forEach(function(pLat, idx) {
+      var rGeom = new THREE.BufferGeometry();
+      var pts = [];
+      var segs = 72;
+      var phi = (90 - pLat) * (Math.PI / 180);
+      var baseR = this.radius * (1.018 + idx * 0.004);
+      var ringRadius = baseR * Math.sin(phi);
+      var ringY = baseR * Math.cos(phi);
+
+      for (var s = 0; s <= segs; s++) {
+        var angle = (s / segs) * Math.PI * 2;
+        // Subtle wavy undulating contour
+        var wave = 1.0 + Math.sin(angle * 6) * 0.04;
+        pts.push(new THREE.Vector3(
+          ringRadius * Math.cos(angle) * wave,
+          ringY,
+          ringRadius * Math.sin(angle) * wave
+        ));
+      }
+      rGeom.setFromPoints(pts);
+      var rLine = new THREE.Line(rGeom, ringMat);
+      globeGroup.add(rLine);
+    }, this);
   };
 
   DigitalGlobe.prototype.startLoop = function() {

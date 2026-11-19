@@ -50,8 +50,8 @@
 
     // 4. Root Globe Pivot Group (rotates with drag and auto-spin)
     this.globeGroup = new THREE.Group();
-    // Default axial tilt of ~18 degrees for realistic planetary alignment
-    this.globeGroup.rotation.x = 0.32;
+    // Tilt forward ~14 degrees so south polar ripple contours and continents face camera (matches reference)
+    this.globeGroup.rotation.x = -0.24;
     this.scene.add(this.globeGroup);
 
     // 5. Events & Controls
