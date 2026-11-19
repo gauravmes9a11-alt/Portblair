@@ -476,12 +476,17 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
 /* Visual Image & Diagram Container in Modal */
 .modal-media-box{
   border:1px solid var(--line);border-radius:16px;background:var(--bg);
-  overflow:hidden;position:relative;padding:12px;
+  overflow:hidden;position:relative;padding:14px;
 }
-.modal-media-box svg{width:100%;height:auto;display:block;border-radius:10px}
+#modalSvgHolder{width:100%;border-radius:10px;overflow:hidden;background:#0A0E1A}
+#modalSvgHolder svg{width:100%!important;height:auto!important;max-height:280px;display:block;border-radius:8px}
 .modal-media-caption{
   margin-top:10px;font-size:13px;color:var(--soft);text-align:center;
-  display:flex;align-items:center;justify-content:center;gap:6px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.caption-pulse-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--b);
+  box-shadow:0 0 8px var(--b);flex-shrink:0;display:inline-block;
 }
 
 .modal-section{display:grid;gap:10px}
@@ -577,7 +582,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
    <div class="modal-media-box">
     <div id="modalSvgHolder"></div>
     <div class="modal-media-caption" id="modalSvgCaption">
-     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+     <span class="caption-pulse-dot" aria-hidden="true"></span>
      <span id="modalCaptionText">System Architecture & Pipeline Diagram</span>
     </div>
    </div>
