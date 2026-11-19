@@ -110,37 +110,35 @@ header.scrolled{
 }
 header .w{display:flex;align-items:center;justify-content:space-between;height:62px;gap:16px}
 .logo{display:inline-flex;align-items:center;gap:10px;font-weight:700;
-.nav-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1.5px solid var(--b);transition:transform .25s ease}
-.logo:hover .nav-avatar{transform:scale(1.12)}
+.nav-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:none;display:block;transition:transform .25s ease}
+.logo:hover .nav-avatar{transform:scale(1.1)}
 .hero-profile-badge{display:flex;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap}
 .hero-profile-badge .pill{margin-bottom:0}
 .hero-avatar-wrap{
-  position:relative;width:58px;height:58px;border-radius:50%;padding:2.5px;
-  background:linear-gradient(135deg,var(--a),var(--b));
-  box-shadow:0 0 18px color-mix(in srgb,var(--b) 35%,transparent);flex-shrink:0;
-  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
+  position:relative;width:64px;height:64px;border-radius:50%;padding:0;
+  background:transparent;border:none;flex-shrink:0;
+  transition:transform .3s cubic-bezier(.16,1,.3,1);
 }
-.hero-avatar-wrap:hover{transform:scale(1.08) rotate(3deg);box-shadow:0 0 26px color-mix(in srgb,var(--b) 60%,transparent)}
-.hero-avatar{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;background:var(--s1)}
+.hero-avatar-wrap:hover{transform:scale(1.08)}
+.hero-avatar{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;border:none}
 .status-pulse{
-  position:absolute;bottom:1px;right:1px;width:13px;height:13px;border-radius:50%;
+  position:absolute;bottom:2px;right:2px;width:12px;height:12px;border-radius:50%;
   background:#10B981;border:2px solid var(--bg);box-shadow:0 0 8px #10B981;
 }
 .about-profile-card{
-  display:flex;gap:22px;align-items:center;border:1px solid var(--line);border-radius:18px;
-  padding:16px 20px;background:color-mix(in srgb,var(--s1) 85%,transparent);
+  display:flex;gap:24px;align-items:center;border:none;border-radius:20px;
+  padding:16px 20px;background:color-mix(in srgb,var(--s1) 60%,transparent);
   backdrop-filter:blur(10px);margin-bottom:24px;
-  transition:border-color .3s,transform .3s,box-shadow .3s;
+  transition:transform .3s,box-shadow .3s;
 }
-.about-profile-card:hover{border-color:color-mix(in srgb,var(--a) 45%,var(--line));transform:translateY(-2px);box-shadow:0 10px 28px -6px color-mix(in srgb,var(--a) 25%,transparent)}
+.about-profile-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px -8px rgba(0,0,0,.4)}
 .about-photo-wrap{
-  position:relative;width:90px;height:90px;border-radius:50%;padding:3px;
-  background:linear-gradient(135deg,var(--a),var(--b));flex-shrink:0;
-  box-shadow:0 8px 22px -4px color-mix(in srgb,var(--a) 40%,transparent);
-  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
+  position:relative;width:110px;height:110px;border-radius:50%;padding:0;
+  background:transparent;border:none;flex-shrink:0;
+  transition:transform .3s cubic-bezier(.16,1,.3,1);
 }
-.about-photo-wrap:hover{transform:scale(1.06);box-shadow:0 12px 28px -4px color-mix(in srgb,var(--b) 50%,transparent)}
-.about-photo-wrap img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.about-photo-wrap:hover{transform:scale(1.05)}
+.about-photo-wrap img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;border:none}
 .about-profile-info h3{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:2px}
 .about-profile-info .role{color:var(--b);font-size:14px;font-weight:500;margin-bottom:8px;display:block}
 .about-profile-badges{display:flex;flex-wrap:wrap;gap:7px}
@@ -654,7 +652,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
 </div>
 
 <header id="site-header"><div class="w">
- <a class="logo" href="#home"><img src="assets/gaurav.jpg" alt="Gaurav Shivakumar" class="nav-avatar" width="28" height="28" /> Gaurav Shivakumar</a>
+ <a class="logo" href="#home"><img src="assets/gaurav.png" alt="Gaurav Shivakumar" class="nav-avatar" width="28" height="28" /> Gaurav Shivakumar</a>
  <nav aria-label="Primary"><a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#deployments">Deployments</a><a href="#experience">Experience</a><a href="#achievements">Achievements</a><a href="#contact">Contact</a></nav>
 </div></header>
 
@@ -663,7 +661,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
  <div class="rv">
   <div class="hero-profile-badge">
    <div class="hero-avatar-wrap">
-    <img src="assets/gaurav.jpg" alt="Gaurav Shivakumar" class="hero-avatar" width="58" height="58" />
+    <img src="assets/gaurav.png" alt="Gaurav Shivakumar" class="hero-avatar" width="58" height="58" />
     <span class="status-pulse" title="Available for AI/ML Opportunities"></span>
    </div>
    <span class="pill"><b>1st place</b> at HAL × IIT Indore Aerothon 2026</span>
@@ -689,7 +687,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
   <h2>About</h2>
   <div class="about-profile-card spotlight-card">
    <div class="about-photo-wrap">
-    <img src="assets/gaurav.jpg" alt="Gaurav Shivakumar" width="90" height="90" />
+    <img src="assets/gaurav.png" alt="Gaurav Shivakumar" width="90" height="90" />
    </div>
    <div class="about-profile-info">
     <h3>Gaurav Shivakumar</h3>
