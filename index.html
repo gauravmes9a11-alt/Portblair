@@ -30,6 +30,41 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--b);outline-offset:3px;border-radius:4px}
 .w{max-width:1120px;margin:0 auto;padding:0 clamp(18px,5vw,44px)}
 
+/* Background Motion Graphic System */
+.bg-ambient-layer{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+.bg-orb{
+  position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none;opacity:0.22;
+  will-change:transform;
+}
+.bg-orb-1{
+  width:640px;height:640px;top:-140px;right:-120px;
+  background:radial-gradient(circle,var(--a) 0%,color-mix(in srgb,var(--a) 40%,transparent) 70%,transparent 100%);
+  animation:driftOrb1 26s ease-in-out infinite alternate;
+}
+.bg-orb-2{
+  width:580px;height:580px;bottom:5%;left:-140px;
+  background:radial-gradient(circle,var(--b) 0%,color-mix(in srgb,var(--b) 30%,transparent) 70%,transparent 100%);
+  animation:driftOrb2 30s ease-in-out infinite alternate;
+}
+@keyframes driftOrb1{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(-100px,80px) scale(1.15)}
+  100%{transform:translate(-40px,160px) scale(0.92)}
+}
+@keyframes driftOrb2{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(120px,-90px) scale(1.18)}
+  100%{transform:translate(60px,-160px) scale(0.95)}
+}
+#bg-canvas{
+  position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;
+}
+header, main, footer{
+  position:relative;z-index:2;
+}
+
 /* Scroll Progress Bar */
 #scroll-progress{
   position:fixed;top:0;left:0;width:100%;height:3.5px;
@@ -460,12 +495,19 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
  *,*::before,*::after{animation:none!important;transition:none!important}
  .rv,.rv-stagger > *{opacity:1!important;transform:none!important}
  .fr{stroke-dashoffset:0}.dt{opacity:.5}.fp{opacity:1}
- #scroll-progress,.back-to-top{display:none!important}
+ #scroll-progress,.back-to-top,#bg-canvas,.bg-ambient-layer{display:none!important}
  .project-modal,.modal-backdrop{transition:none!important;transform:none!important}
 }
 </style>
 </head>
 <body>
+<!-- Ambient Background Motion Graphic System -->
+<div class="bg-ambient-layer" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+</div>
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+
 <!-- Top scroll progress indicator -->
 <div id="scroll-progress" aria-hidden="true"></div>
 
@@ -1571,7 +1613,200 @@ var PROJECTS_DATA = {
     document.body.style.overflow = '';
   }
 
-  // Click listeners for project cards
+  // ==========================================================================
+  // BACKGROUND MOTION GRAPHIC: INTERACTIVE NEURAL & AVIONICS FLIGHT GRID
+  // ==========================================================================
+  (function initBackgroundMotion(){
+    var canvas = document.getElementById('bg-canvas');
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    if(!ctx) return;
+
+    var width = 0, height = 0;
+    var particles = [];
+    var streaks = [];
+    var mouse = { x: -9999, y: -9999, active: false };
+    var scrollY = window.pageYOffset || 0;
+    var lastScrollY = scrollY;
+    var scrollVelocity = 0;
+    var isTabActive = true;
+    var isDark = true;
+
+    function checkTheme(){
+      isDark = !document.documentElement.hasAttribute('data-theme') || 
+               document.documentElement.getAttribute('data-theme') === 'dark' ||
+               (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && document.documentElement.getAttribute('data-theme') !== 'light');
+    }
+
+    function resize(){
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initParticles();
+    }
+
+    function initParticles(){
+      var isMobile = width < 768;
+      var count = isMobile ? 32 : Math.min(Math.floor((width * height) / 19000), 75);
+      particles = [];
+      for(var i = 0; i < count; i++){
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.55,
+          vy: (Math.random() - 0.5) * 0.55,
+          radius: Math.random() * 1.8 + 1.2,
+          z: Math.random() * 0.6 + 0.4,
+          alpha: Math.random() * 0.45 + 0.3,
+          pulseSpeed: Math.random() * 0.02 + 0.01,
+          pulseVal: Math.random() * Math.PI
+        });
+      }
+    }
+
+    function spawnStreak(){
+      if(streaks.length >= 2 || !isTabActive) return;
+      var angle = (Math.random() * 24 - 12) * Math.PI / 180;
+      var speed = Math.random() * 6 + 7;
+      streaks.push({
+        x: -60,
+        y: Math.random() * height * 0.85,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed + 0.5,
+        len: Math.random() * 90 + 70,
+        alpha: Math.random() * 0.35 + 0.3,
+        width: Math.random() * 1.5 + 1.2
+      });
+    }
+
+    setInterval(spawnStreak, 4200);
+
+    window.addEventListener('resize', resize, { passive: true });
+    window.addEventListener('scroll', function(){
+      scrollY = window.pageYOffset || 0;
+      scrollVelocity = (scrollY - lastScrollY) * 0.12;
+      lastScrollY = scrollY;
+    }, { passive: true });
+
+    window.addEventListener('mousemove', function(e){
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+    }, { passive: true });
+
+    window.addEventListener('mouseleave', function(){
+      mouse.active = false;
+      mouse.x = -9999;
+      mouse.y = -9999;
+    });
+
+    document.addEventListener('visibilitychange', function(){
+      isTabActive = !document.hidden;
+      if(isTabActive) requestAnimationFrame(loop);
+    });
+
+    function draw(){
+      ctx.clearRect(0, 0, width, height);
+      checkTheme();
+
+      var colorNodeA = isDark ? '92, 141, 255' : '36, 71, 200';
+      var colorNodeB = isDark ? '111, 224, 242' : '11, 127, 149';
+      var maxDist = width < 768 ? 95 : 135;
+      var mouseRadius = 160;
+
+      scrollVelocity *= 0.92;
+
+      for(var i = 0; i < particles.length; i++){
+        var p = particles[i];
+        p.x += p.vx * p.z;
+        p.y += (p.vy - scrollVelocity * 0.4) * p.z;
+        p.pulseVal += p.pulseSpeed;
+
+        if(p.x < -20) p.x = width + 20;
+        else if(p.x > width + 20) p.x = -20;
+        if(p.y < -20) p.y = height + 20;
+        else if(p.y > height + 20) p.y = -20;
+
+        if(mouse.active){
+          var dx = mouse.x - p.x;
+          var dy = mouse.y - p.y;
+          var distM = Math.sqrt(dx * dx + dy * dy);
+          if(distM < mouseRadius){
+            var force = (1 - distM / mouseRadius) * 0.035;
+            p.x += dx * force;
+            p.y += dy * force;
+
+            var mouseAlpha = (1 - distM / mouseRadius) * 0.28;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = 'rgba(' + colorNodeB + ',' + mouseAlpha + ')';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+          }
+        }
+
+        for(var j = i + 1; j < particles.length; j++){
+          var p2 = particles[j];
+          var dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if(dist < maxDist){
+            var lineAlpha = (1 - dist / maxDist) * 0.16 * p.z;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = 'rgba(' + colorNodeA + ',' + lineAlpha + ')';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+
+        var currentRadius = p.radius + Math.sin(p.pulseVal) * 0.4;
+        var currentAlpha = p.alpha + Math.sin(p.pulseVal) * 0.15;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, currentRadius, 0, Math.PI * 2);
+        ctx.fillStyle = (i % 2 === 0) 
+          ? 'rgba(' + colorNodeB + ',' + currentAlpha + ')' 
+          : 'rgba(' + colorNodeA + ',' + currentAlpha + ')';
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = 'rgba(' + colorNodeB + ', 0.4)';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      for(var s = streaks.length - 1; s >= 0; s--){
+        var st = streaks[s];
+        st.x += st.vx;
+        st.y += st.vy;
+
+        var grad = ctx.createLinearGradient(st.x - st.vx * (st.len / 10), st.y - st.vy * (st.len / 10), st.x, st.y);
+        grad.addColorStop(0, 'rgba(' + colorNodeA + ', 0)');
+        grad.addColorStop(0.7, 'rgba(' + colorNodeB + ',' + (st.alpha * 0.7) + ')');
+        grad.addColorStop(1, 'rgba(255, 255, 255, ' + st.alpha + ')');
+
+        ctx.beginPath();
+        ctx.moveTo(st.x - st.vx * 3, st.y - st.vy * 3);
+        ctx.lineTo(st.x, st.y);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = st.width;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        if(st.x > width + 100 || st.y > height + 100){
+          streaks.splice(s, 1);
+        }
+      }
+    }
+
+    function loop(){
+      if(!isTabActive) return;
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    resize();
+    loop();
+  })();
+
+    // Click listeners for project cards
   document.querySelectorAll('[data-project-id]').forEach(function(el){
     el.addEventListener('click', function(ev){
       // If clicking directly on an external link inside the card, allow standard link behavior
