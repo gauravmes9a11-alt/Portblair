@@ -32,9 +32,9 @@
     // 1. Three.js Scene
     this.scene = new THREE.Scene();
 
-    // 2. Perspective Camera
-    this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 1, 1000);
-    this.camera.position.z = 270;
+    // 2. Perspective Camera with full-globe framing
+    this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 1, 2000);
+    this.updateCameraDistance();
 
     // 3. WebGL Renderer with Alpha
     this.renderer = new THREE.WebGLRenderer({
@@ -121,6 +121,20 @@
     }, { passive: true });
   };
 
+  GlobeScene.prototype.updateCameraDistance = function() {
+    if (!this.camera || !this.width || !this.height) return;
+    var aspect = this.width / this.height;
+    // Base distance of 470 units guarantees that the full Earth (radius 100) and all orbital rings (radius 144)
+    // are completely visible with comfortable breathing room on all sides.
+    var baseDistance = 470;
+    if (aspect < 1.0) {
+      // Zoom out on narrow or mobile viewports so neither the globe nor outer orbital rings clip
+      this.camera.position.z = Math.min(820, baseDistance / Math.max(0.48, aspect));
+    } else {
+      this.camera.position.z = baseDistance;
+    }
+  };
+
   GlobeScene.prototype.onResize = function() {
     if (!this.container) return;
     this.width = this.container.clientWidth;
@@ -128,6 +142,7 @@
     if (this.width === 0 || this.height === 0) return;
 
     this.camera.aspect = this.width / this.height;
+    this.updateCameraDistance();
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(this.width, this.height);
   };

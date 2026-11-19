@@ -324,7 +324,7 @@
     geom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     var mat = new THREE.PointsMaterial({
-      size: 2.8,
+      size: 3.6,
       vertexColors: true,
       transparent: true,
       opacity: 0.95,
