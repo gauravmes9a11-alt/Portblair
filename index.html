@@ -365,6 +365,43 @@ h1{font:700 clamp(36px,5.6vw,68px)/1.04 inherit;letter-spacing:-.03em}
 .mini-card p{color:var(--soft);font-size:14.5px;max-width:52em}
 .mini-link{font-size:13.5px;color:var(--b);font-weight:600;white-space:nowrap;display:flex;align-items:center;gap:4px}
 
+
+/* Deployments Section */
+.dep-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;
+}
+.dep-card{
+  border:1px solid var(--line);border-radius:18px;background:var(--s1);
+  padding:24px;display:flex;flex-direction:column;justify-content:space-between;
+  transition:border-color .3s,transform .3s cubic-bezier(.16,1,.3,1),box-shadow .35s;
+  position:relative;
+}
+.dep-card:hover{
+  border-color:color-mix(in srgb,var(--b) 50%,var(--line));
+  transform:translateY(-4px);
+  box-shadow:0 14px 34px -10px color-mix(in srgb,var(--b) 25%,transparent);
+}
+.dep-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.dep-platform{
+  display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;
+  padding:4px 11px;border-radius:99px;background:color-mix(in srgb,var(--a) 14%,transparent);
+  color:var(--b);border:1px solid color-mix(in srgb,var(--b) 25%,transparent);
+}
+.dep-dot{width:7px;height:7px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981;display:inline-block}
+.dep-type{font-size:12.5px;color:var(--soft)}
+.dep-card h3{font-size:19px;font-weight:700;line-height:1.3;margin-bottom:8px;letter-spacing:-.015em}
+.dep-context{color:var(--soft);font-size:14.5px;line-height:1.55;margin-bottom:18px;flex-grow:1}
+.dep-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line)}
+.dep-tags{display:flex;gap:6px;flex-wrap:wrap}
+.dep-tags span{font-size:11.5px;padding:3px 9px;border-radius:99px;background:color-mix(in srgb,var(--tx) 8%,transparent);color:var(--soft)}
+.dep-launch-btn{
+  display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;color:var(--tx);
+  text-decoration:none;padding:7px 14px;border-radius:8px;border:1px solid var(--line);
+  background:color-mix(in srgb,var(--bg) 60%,transparent);transition:all .2s;
+}
+.dep-launch-btn:hover{background:var(--b);color:#07101F;border-color:transparent;transform:translateX(2px)}
+.card-btn-group{display:flex;gap:8px;flex-wrap:wrap}
+
 /* experience */
 .xp{display:grid;gap:18px}
 .xp article{
@@ -618,7 +655,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
 
 <header id="site-header"><div class="w">
  <a class="logo" href="#home"><img src="assets/gaurav.jpg" alt="Gaurav Shivakumar" class="nav-avatar" width="28" height="28" /> Gaurav Shivakumar</a>
- <nav aria-label="Primary"><a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#achievements">Achievements</a><a href="#contact">Contact</a></nav>
+ <nav aria-label="Primary"><a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#deployments">Deployments</a><a href="#experience">Experience</a><a href="#achievements">Achievements</a><a href="#contact">Contact</a></nav>
 </div></header>
 
 <main>
@@ -707,7 +744,11 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
   </div>
   <div class="pj-action-bar">
    <div class="tags"><span>NSGA-II</span><span>Mission simulation</span><span>Energy management</span><span>Python</span></div>
-   <span class="open-window-btn">Open Project Window ↗</span>
+   <div class="card-btn-group">
+    <a href="https://aeropulse-hal.streamlit.app/" target="_blank" rel="noopener" class="btn p sm">Functional App ↗</a>
+    <a href="https://aero-pulse-simulation.vercel.app/" target="_blank" rel="noopener" class="btn sm">Simulation ↗</a>
+    <span class="open-window-btn">Details Window ↗</span>
+   </div>
   </div>
  </article>
 
@@ -722,7 +763,10 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
   </div>
   <div class="pj-action-bar">
    <div class="tags"><span>YOLOv8</span><span>ANPR</span><span>Isolation Forest</span><span>ARIMA</span><span>LSTM</span></div>
-   <span class="open-window-btn">Open Project Window ↗</span>
+   <div class="card-btn-group">
+    <a href="https://hp-one.onrender.com/" target="_blank" rel="noopener" class="btn p sm">Live Dashboard ↗</a>
+    <span class="open-window-btn">Details Window ↗</span>
+   </div>
   </div>
  </article>
 
@@ -733,7 +777,10 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
    <p class="prob">Cross-modal satellite image retrieval: Physics-guided Earth-Invariant Representation Learning, built for ISRO’s Bharatiya Antariksh Hackathon 2026.</p>
    <div class="pj-action-bar">
     <div class="tags"><span>Satellite Vision</span><span>PyTorch</span><span>GIS</span></div>
-    <span class="open-window-btn">Open Project Window ↗</span>
+    <div class="card-btn-group">
+     <a href="https://peirl.vercel.app/" target="_blank" rel="noopener" class="btn p sm">Live Demo ↗</a>
+     <span class="open-window-btn">Details ↗</span>
+    </div>
    </div>
   </article>
 
@@ -797,6 +844,126 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
 
  <div class="rv" style="margin-top:28px">
   <div class="lk"><a href="https://github.com/gauravmes9a11-alt" target="_blank" rel="noopener">All repositories on GitHub →</a></div>
+ </div>
+</div></section>
+
+
+<section id="deployments"><div class="w">
+ <h2 class="rv">Live Deployments</h2>
+ <p class="sub rv">Production web applications, interactive physics simulations, and operational AI dashboards deployed across Streamlit Cloud, Vercel, and Render. These environments connect directly to live telemetry streams, flight models, and machine learning inference pipelines running in the browser.</p>
+ 
+ <div class="dep-grid rv-stagger">
+  <!-- 1. AeroPulse Functional App -->
+  <div class="dep-card spotlight-card">
+   <div class="dep-top">
+    <span class="dep-platform"><span class="dep-dot"></span> Streamlit Cloud</span>
+    <span class="dep-type">Aerospace Telemetry</span>
+   </div>
+   <h3>AeroPulse: Aerospace Telemetry Hub</h3>
+   <p class="dep-context">Grand Finale champion project at HAL × IIT Indore Aerothon 2026. Live telemetry analytics, flight dynamic modeling, and NSGA-II propulsion trade-off analyzer for hybrid-electric fixed-wing UAVs.</p>
+   <div class="dep-bottom">
+    <div class="dep-tags"><span>Streamlit</span><span>Python</span><span>NSGA-II</span><span>SciPy</span></div>
+    <a href="https://aeropulse-hal.streamlit.app/" target="_blank" rel="noopener" class="dep-launch-btn">Launch App ↗</a>
+   </div>
+  </div>
+
+  <!-- 2. AeroPulse Simulation -->
+  <div class="dep-card spotlight-card">
+   <div class="dep-top">
+    <span class="dep-platform"><span class="dep-dot"></span> Vercel</span>
+    <span class="dep-type">Flight Dynamics</span>
+   </div>
+   <h3>AeroPulse: Flight Mission Simulation</h3>
+   <p class="dep-context">Interactive time-stepped flight dynamics testbed. Simulates hybrid-electric power sharing and battery thermal discharge curves across Climb, Cruise, Loiter, Dash, and Descent mission profiles.</p>
+   <div class="dep-bottom">
+    <div class="dep-tags"><span>Vercel</span><span>Mission Simulation</span><span>Flight Envelopes</span></div>
+    <a href="https://aero-pulse-simulation.vercel.app/" target="_blank" rel="noopener" class="dep-launch-btn">Launch Testbed ↗</a>
+   </div>
+  </div>
+
+  <!-- 3. PEIRL -->
+  <div class="dep-card spotlight-card">
+   <div class="dep-top">
+    <span class="dep-platform"><span class="dep-dot"></span> Vercel</span>
+    <span class="dep-type">Satellite Vision</span>
+   </div>
+   <h3>PEIRL: Cross-Modal Satellite Retrieval</h3>
+   <p class="dep-context">Built for ISRO's Bharatiya Antariksh Hackathon 2026. Demonstrates Physics-guided Earth-Invariant Representation Learning for matching Synthetic Aperture Radar (SAR) with multi-spectral optical satellite tiles.</p>
+   <div class="dep-bottom">
+    <div class="dep-tags"><span>ISRO</span><span>PyTorch</span><span>SAR Vision</span><span>GIS</span></div>
+    <a href="https://peirl.vercel.app/" target="_blank" rel="noopener" class="dep-launch-btn">Live Demo ↗</a>
+   </div>
+  </div>
+
+  <!-- 4. HP ONE -->
+  <div class="dep-card spotlight-card">
+   <div class="dep-top">
+    <span class="dep-platform"><span class="dep-dot"></span> Render</span>
+    <span class="dep-type">Retail Outlets AI</span>
+   </div>
+   <h3>HP ONE: Project UDAAN Command Center</h3>
+   <p class="dep-context">Developed during my summer internship at HPCL. Integrates CCTV YOLOv8 forecourt bay routing, Isolation Forest dispenser auditor, and ARIMA/LSTM predictive tank leak/stockout forecasting into a live dashboard.</p>
+   <div class="dep-bottom">
+    <div class="dep-tags"><span>Render</span><span>YOLOv8</span><span>Isolation Forest</span><span>ARIMA/LSTM</span></div>
+    <a href="https://hp-one.onrender.com/" target="_blank" rel="noopener" class="dep-launch-btn">Open Dashboard ↗</a>
+   </div>
+  </div>
+
+  <!-- 5. LaKD Simulation -->
+  <div class="dep-card spotlight-card">
+   <div class="dep-top">
+    <span class="dep-platform"><span class="dep-dot"></span> Vercel</span>
+    <span class="dep-type">Deep Learning</span>
+   </div>
+   <h3>LaKD-UAV: Trajectory Distillation Testbed</h3>
+   <p class="dep-context">Interactive visualizer for the LaKD-UAV knowledge distillation framework. Demonstrates variable-length autonomous flight trajectory prediction and model compression for edge avionics computers.</p>
+   <div class="dep-bottom">
+    <div class="dep-tags"><span>Knowledge Distillation</span><span>PyTorch</span><span>Trajectories</span></div>
+    <a href="https://lakd-simulation.vercel.app/" target="_blank" rel="noopener" class="dep-launch-btn">Explore Testbed ↗</a>
+   </div>
+  </div>
+
+  <!-- 6. PromptWars Chatbot -->
+  <div class="dep-card spotlight-card">
+   <div class="dep-top">
+    <span class="dep-platform"><span class="dep-dot"></span> Vercel</span>
+    <span class="dep-type">Generative AI</span>
+   </div>
+   <h3>PromptWars: Adversarial LLM Arena</h3>
+   <p class="dep-context">Competitive prompt-engineering and agentic chatbot testbed designed to stress-test prompt injection defenses, LLM jailbreak mitigation strategies, and multi-agent conversational guards.</p>
+   <div class="dep-bottom">
+    <div class="dep-tags"><span>Prompt Engineering</span><span>LLM Security</span><span>Gen AI</span></div>
+    <a href="https://prompt-wars-chatbot.vercel.app/" target="_blank" rel="noopener" class="dep-launch-btn">Try Chatbot ↗</a>
+   </div>
+  </div>
+
+  <!-- 7. SpendSense -->
+  <div class="dep-card spotlight-card">
+   <div class="dep-top">
+    <span class="dep-platform"><span class="dep-dot"></span> Vercel</span>
+    <span class="dep-type">FinTech & Analytics</span>
+   </div>
+   <h3>SpendSense: Intelligent Financial Analytics</h3>
+   <p class="dep-context">Full-stack personal finance and expenditure intelligence platform featuring transaction categorization, spending pattern forecasting, and automated budget anomaly detection.</p>
+   <div class="dep-bottom">
+    <div class="dep-tags"><span>Data Analytics</span><span>Anomaly Detection</span><span>Next.js</span></div>
+    <a href="https://spendsense-opal.vercel.app/" target="_blank" rel="noopener" class="dep-launch-btn">Launch SpendSense ↗</a>
+   </div>
+  </div>
+
+  <!-- 8. College Timetable Generator -->
+  <div class="dep-card spotlight-card">
+   <div class="dep-top">
+    <span class="dep-platform"><span class="dep-dot"></span> Render</span>
+    <span class="dep-type">Constraint Satisfaction</span>
+   </div>
+   <h3>Academic Timetable Optimization Engine</h3>
+   <p class="dep-context">Automated university schedule generator employing heuristic constraint satisfaction algorithms to eliminate faculty clashes, balance student batch workloads, and optimize lecture hall room capacities.</p>
+   <div class="dep-bottom">
+    <div class="dep-tags"><span>Heuristics</span><span>Algorithms</span><span>Python</span><span>Scheduling</span></div>
+    <a href="https://college-timetable-generator-qkry.onrender.com/" target="_blank" rel="noopener" class="dep-launch-btn">Generate Schedules ↗</a>
+   </div>
+  </div>
  </div>
 </div></section>
 
@@ -886,6 +1053,9 @@ var PROJECTS_DATA = {
     caption: "AeroPulse Hybrid-Electric Propulsion Architecture & NSGA-II Energy Management",
     github: "https://github.com/gauravmes9a11-alt/AeroPulse",
     githubSecondary: "https://github.com/gauravmes9a11-alt/AeroPulse-Simulation",
+    demo: "https://aeropulse-hal.streamlit.app/",
+    demoLabel: "Functional App (Streamlit)",
+    simulation: "https://aero-pulse-simulation.vercel.app/",
     problem: "Fixed-wing unmanned aerial vehicles (UAVs) face a brutal multi-variable trade-off: pure battery configurations lack the endurance needed for long-range reconnaissance, while pure combustion systems are heavy and thermally inefficient. AeroPulse is an autonomous simulation and multi-objective optimization framework that designs the optimal hybrid-electric propulsion powertrain and real-time energy management system.",
     metrics: [
       { val: "1st Place", lbl: "Grand Finale Champion" },
@@ -953,6 +1123,8 @@ var PROJECTS_DATA = {
     caption: "HP ONE Tri-Module AI Architecture for Forecourt & Inventory Control",
     github: "https://github.com/gauravmes9a11-alt",
     githubSecondary: null,
+    demo: "https://hp-one.onrender.com/",
+    demoLabel: "Live Command Dashboard (Render)", 
     problem: "High-volume retail fuel outlets leak revenue through untracked nozzle tampering, delivery shortages, vehicle congestion during peak hours, and unanticipated underground tank stock-outs. HP ONE consolidates CCTV computer vision, controller anomaly detection, and time-series tank telemetry into an automated operational command interface.",
     metrics: [
       { val: "3 Modules", lbl: "Integrated AI Subsystems" },
@@ -1660,12 +1832,21 @@ var PROJECTS_DATA = {
     }
     if(data.demo){
       var demoBtn = document.createElement('a');
-      demoBtn.className = 'btn sm';
+      demoBtn.className = 'btn p sm';
       demoBtn.href = data.demo;
       demoBtn.target = '_blank';
       demoBtn.rel = 'noopener';
-      demoBtn.innerHTML = '<span>Live Demo</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+      demoBtn.innerHTML = '<span>' + (data.demoLabel || 'Live Demo') + '</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
       modalLinksContainer.appendChild(demoBtn);
+    }
+    if(data.simulation){
+      var simBtn = document.createElement('a');
+      simBtn.className = 'btn sm';
+      simBtn.href = data.simulation;
+      simBtn.target = '_blank';
+      simBtn.rel = 'noopener';
+      simBtn.innerHTML = '<span>Simulation Testbed</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+      modalLinksContainer.appendChild(simBtn);
     }
 
     modalBackdrop.classList.add('open');
