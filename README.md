@@ -1,6 +1,5 @@
 # Gaurav Shivakumar - Personal Portfolio & Interactive Showcase
 
-> Personal portfolio of Gaurav Shivakumar, AI/ML Engineer and Grand Finale Winner at HAL × IIT Indore Aerothon 2026.
 
 ## 🚀 Overview
 
