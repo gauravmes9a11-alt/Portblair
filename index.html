@@ -238,43 +238,34 @@ h1{font:700 clamp(36px,5.6vw,68px)/1.04 inherit;letter-spacing:-.03em}
 .soc a{color:var(--soft);text-underline-offset:4px;transition:color .2s,transform .2s;display:inline-block}
 .soc a:hover{color:var(--tx);transform:translateY(-1px)}
 
-/* Interactive Pareto Front Visualization */
-.viz{
-  position:relative;border:1px solid var(--line);border-radius:20px;
-  background:linear-gradient(160deg,var(--s1),transparent);padding:14px 14px 10px;
-  transition:border-color .3s ease,box-shadow .3s ease;
+/* 3D Holographic Digital Globe */
+.globe-wrapper{
+  position:relative;width:100%;height:clamp(400px,46vw,540px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:transparent;border:none;overflow:visible;
 }
-.viz:hover{border-color:color-mix(in srgb,var(--a) 45%,var(--line))}
-.viz svg{width:100%;height:auto;display:block;overflow:visible}
-.viz figcaption{font-size:13px;color:var(--soft);padding:6px 6px 4px}
-.ax{stroke:var(--line);stroke-width:1}
-.fr{fill:none;stroke:var(--b);stroke-width:1.6;stroke-dasharray:1;stroke-dashoffset:1}
-.go .fr{stroke-dashoffset:0;transition:stroke-dashoffset 2.2s cubic-bezier(.5,0,.2,1) .4s}
-.dt{
-  fill:var(--soft);opacity:0;cursor:pointer;
-  transition:opacity .6s calc(.3s + var(--i)*45ms),fill .2s,r .2s;
+.globe-canvas-container{
+  width:100%;height:100%;position:relative;cursor:grab;touch-action:pan-y;
+  display:flex;align-items:center;justify-content:center;
 }
-.go .dt{opacity:.5}
-.dt:hover{opacity:1;fill:var(--tx);r:4.5}
-.fp{
-  fill:var(--b);opacity:0;cursor:pointer;
-  transition:opacity .5s calc(.6s + var(--i)*70ms),fill .2s,r .2s;
+.globe-canvas-container:active{cursor:grabbing}
+.globe-canvas-container canvas{width:100%!important;height:100%!important;display:block;outline:none}
+.globe-status-pill{
+  position:absolute;bottom:0px;display:inline-flex;align-items:center;gap:8px;
+  padding:5px 14px;border-radius:99px;background:color-mix(in srgb,var(--s1) 85%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--line);font-size:12px;color:var(--soft);pointer-events:none;
+  box-shadow:0 4px 16px rgba(0,0,0,.4);
 }
-.go .fp{opacity:1}
-.fp:hover{fill:var(--tx);r:5.5}
-.sel{fill:var(--a);stroke:var(--tx);stroke-width:2;cursor:pointer;transition:transform .2s ease}
-.sel:hover{transform:scale(1.25);transform-origin:center}
-.ring{fill:none;stroke:var(--a);stroke-width:1.5;transform-box:fill-box;transform-origin:center;animation:ring 2.6s ease-out infinite}
-@keyframes ring{from{transform:scale(1);opacity:.9}to{transform:scale(3.4);opacity:0}}
-.lbl{font-size:11.5px;fill:var(--soft);user-select:none}
-.viz-tooltip{
-  position:absolute;padding:6px 10px;border-radius:8px;font-size:12px;
-  background:color-mix(in srgb,var(--s1) 95%,transparent);
-  border:1px solid var(--line);color:var(--tx);box-shadow:0 8px 20px rgba(0,0,0,.4);
-  pointer-events:none;opacity:0;transform:translate(-50%,-120%) scale(.95);
-  transition:opacity .2s ease,transform .2s ease;z-index:10;white-space:nowrap;
+.globe-status-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--b);
+  box-shadow:0 0 8px var(--b);display:inline-block;
+  animation:pulseDot 2.4s ease-in-out infinite;
 }
-.viz-tooltip.active{opacity:1;transform:translate(-50%,-135%) scale(1)}
+@keyframes pulseDot{
+  0%,100%{transform:scale(1);opacity:.8}
+  50%{transform:scale(1.4);opacity:1}
+}
 
 /* about + education */
 .two{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(28px,5vw,64px)}
@@ -674,15 +665,13 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
   <div class="cta"><a class="btn p" href="#projects">View My Work</a><a class="btn" href="Gaurav_Shivakumar_Resume.pdf" download>Download Resume</a></div>
   <div class="soc"><a href="https://github.com/gauravmes9a11-alt" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/gauravs-378954347" target="_blank" rel="noopener">LinkedIn</a><a href="mailto:gaurav.mes9a11@gmail.com">Email</a></div>
  </div>
- <figure class="viz spotlight-card" aria-label="Illustration of a Pareto front, the set of designs where improving one objective costs another">
-  <div id="vizTooltip" class="viz-tooltip" role="tooltip">Hover over design points</div>
-  <svg id="pf" viewBox="0 0 400 320" role="img"><title>Pareto front illustration</title>
-   <line class="ax" x1="30" y1="290" x2="390" y2="290"/><line class="ax" x1="30" y1="290" x2="30" y2="14"/>
-   <text class="lbl" x="390" y="311" text-anchor="end">fuel burn, lower is better</text>
-   <text class="lbl" x="38" y="20">endurance</text>
-  </svg>
-  <figcaption>Illustration of a Pareto front: the designs where gaining on one objective means giving up another. This is the idea behind my Aerothon work.</figcaption>
- </figure>
+ <div class="globe-wrapper rv" id="globeWrapper">
+  <div id="globeCanvasContainer" class="globe-canvas-container" role="img" aria-label="Interactive 3D Digital Holographic Earth"></div>
+  <div class="globe-status-pill">
+   <span class="globe-status-dot"></span>
+   <span>Autonomous Telemetry & Global Model Inference</span>
+  </div>
+ </div>
 </div></section>
 
 <section id="about"><div class="w two">
@@ -1136,6 +1125,12 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--soft);fo
 </div></section>
 </main>
 <footer><div class="w">© 2026 Gaurav Shivakumar. Bengaluru, India.</div></footer>
+
+<!-- Three.js Library & 3D Holographic Digital Globe Components -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="assets/js/GlobeScene.js"></script>
+<script src="assets/js/GlobeEffects.js"></script>
+<script src="assets/js/DigitalGlobe.js"></script>
 
 <script>
 document.documentElement.classList.add('js');
@@ -1834,78 +1829,8 @@ var PROJECTS_DATA = {
 };
 
 (function(){
-  // --- 1. SVG Pareto Front Generation & Interactive Exploration ---
-  var NS = 'http://www.w3.org/2000/svg', s = document.getElementById('pf'), tooltip = document.getElementById('vizTooltip');
-  function el(t, a, p){
-    var e = document.createElementNS(NS, t);
-    for(var k in a) e.setAttribute(k, a[k]);
-    (p || s).appendChild(e);
-    return e;
-  }
-  var seed = 7;
-  function r(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
-  
-  var F = [], d = '';
-  for(var i = 0; i < 14; i++){
-    var t = i / 13, x = 46 + t * 320, y = 276 - 236 * Math.pow(t, 0.62);
-    F.push([x, y]);
-    d += (i ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
-  }
-  
-  // Non-optimal points (explored designs)
-  for(var j = 0; j < 34; j++){
-    var b = F[Math.floor(r() * 14)];
-    var cx = (b[0] + 10 + r() * 56).toFixed(1), cy = (b[1] + 10 + r() * 60).toFixed(1);
-    var c = el('circle', { cx: cx, cy: cy, r: 2.6, class: 'dt', 'data-fuel': (18 + r()*12).toFixed(1), 'data-end': (2.5 + r()*3.5).toFixed(1) });
-    c.style.setProperty('--i', j);
-    setupPointHover(c, 'Sub-optimal Design', false);
-  }
-  
-  // Pareto frontier path
-  var p = el('path', { d: d, class: 'fr', pathLength: 1 });
-  
-  // Pareto frontier optimal points
-  F.forEach(function(f, idx){
-    var c = el('circle', { cx: f[0], cy: f[1], r: 3.4, class: 'fp', 'data-fuel': (10 + (idx/13)*18).toFixed(1), 'data-end': (1.8 + Math.pow(1 - idx/13, 0.62)*5.2).toFixed(1) });
-    c.style.setProperty('--i', idx);
-    setupPointHover(c, 'Pareto Optimal #' + (idx + 1), true);
-  });
-  
-  // Selected Design (Winner)
-  var q = F[9];
-  el('circle', { cx: q[0], cy: q[1], r: 6, class: 'ring' });
-  var chosen = el('circle', { cx: q[0], cy: q[1], r: 6, class: 'sel' });
-  var tx = el('text', { x: q[0] - 10, y: q[1] - 16, class: 'lbl', 'text-anchor': 'end' });
-  tx.textContent = 'chosen design';
-  setupPointHover(chosen, 'AeroPulse Winner: Optimal Multi-objective Configuration', true);
-
-  function setupPointHover(circle, title, isOptimal){
-    if(!tooltip) return;
-    circle.addEventListener('mouseenter', function(ev){
-      var fuel = circle.getAttribute('data-fuel') || '14.2';
-      var end = circle.getAttribute('data-end') || '4.5';
-      tooltip.innerHTML = '<strong>' + title + '</strong><br>' +
-        '<span style="color:var(--soft)">Burn:</span> ' + fuel + ' kg &nbsp;|&nbsp; ' +
-        '<span style="color:var(--soft)">Endurance:</span> ' + end + ' hrs';
-      var rect = s.getBoundingClientRect();
-      var pt = s.createSVGPoint();
-      pt.x = parseFloat(circle.getAttribute('cx'));
-      pt.y = parseFloat(circle.getAttribute('cy'));
-      var screenPt = pt.matrixTransform(s.getScreenCTM());
-      var containerRect = s.parentElement.getBoundingClientRect();
-      tooltip.style.left = (screenPt.x - containerRect.left) + 'px';
-      tooltip.style.top = (screenPt.y - containerRect.top) + 'px';
-      tooltip.classList.add('active');
-    });
-    circle.addEventListener('mouseleave', function(){
-      tooltip.classList.remove('active');
-    });
-  }
-
   requestAnimationFrame(function(){
-    requestAnimationFrame(function(){
-      document.documentElement.classList.add('go');
-    });
+    document.documentElement.classList.add('go');
   });
 
   // --- 2. Scroll Progress Bar & Dynamic Header & Back-To-Top Gauge ---
